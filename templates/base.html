@@ -1,24 +1,13 @@
 {% load static %}
 <!doctype html>
 <html lang="en" data-bs-theme="auto">
-    <head><script src="{% static 'js/color-modes.js' %}"></script>
-        <meta charset="utf-8">
-        <title>Mesa Rapida | Nome do Estabelecimento</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
-        <link rel="stylesheet" href="{% static 'css/sidebars.css' %}">
-        <script src="{% static '/js/htmx.js' %}" defer></script>
-        <link rel="apple-touch-icon" sizes="180x180" href="{% static 'img/favicons/apple-touch-icon.png' %}">
-        <link rel="icon" type="image/png" sizes="32x32" href="{% static 'img/favicons/favicon-32x32.png' %}">
-        <link rel="icon" type="image/png" sizes="16x16" href="{% static 'img/favicons/favicon-16x16.png' %}">
-        <link rel="manifest" href="{% static 'img/favicons/site.webmanifest' %}">
-    </head>
-    <body>
-        {% comment %} {% include "includes/navbar.html" %} {% endcomment %}
-        {% include "includes/sidebar.html" %}
-        {% block content %}{% endblock content %}
-        <script src="{% static 'bootstrap/js/bootstrap.bundle.min.js' %}" defer></script>
-        <script src="{% static 'js/sidebars.js' %}" defer></script>
-    </body>
+  <head><script src="{% static "js/color-modes.js" %}"></script>
+    {% include "includes/head.html" %}
+  </head>
+  <body>
+    {% include "includes/color_mode.html" %}
+    {% include "includes/sidebar.html" %}
+    {% block content %}{% endblock content %}
+    {% include "includes/scripts.html" %}
+  </body>
 </html>
