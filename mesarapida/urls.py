@@ -15,9 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from core.views import home
+from core.views import home, overview, dashboard
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home, name='home'),
 ]
+
+htmx_urlpatterns = [
+    path('overview/', overview, name='overview'),
+    path('dashboard/', dashboard, name='dashboard'),
+]
+
+urlpatterns += htmx_urlpatterns

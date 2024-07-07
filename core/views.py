@@ -6,3 +6,11 @@ def home(request):
         request=request,
         template_name='base.html'
     )
+
+
+def overview(request):
+    return render(request, 'overview.html')
+
+
+def dashboard(request):
+    return render(request, 'dashboard.html')
