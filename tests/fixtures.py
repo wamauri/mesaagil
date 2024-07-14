@@ -62,3 +62,10 @@ available_fixtures = [
     "tmpdir_factory", 
     "transactional_db"
 ]
+
+@pytest.fixture
+def user(db, django_user_model):
+    return django_user_model.objects.create(
+        email='test@test.com',
+        password='12345678',
+    )
