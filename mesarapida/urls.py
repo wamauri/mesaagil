@@ -15,12 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from core.views import home, overview, dashboard
+from apps.core.views import overview, dashboard
 
 urlpatterns = [
-    path(route='', view=include('core.urls')),
+    path(route='', view=include('apps.core.urls')),
     path(route='admin/', view=admin.site.urls),
     path(route='accounts/', view=include('django.contrib.auth.urls')),
+    path(
+        route='restaurants/waiters/', 
+        view=include(('apps.restaurants.urls', 'restaurants'), namespace='waiter'),
+    ),
 ]
 
 htmx_urlpatterns = [
