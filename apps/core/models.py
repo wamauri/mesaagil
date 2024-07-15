@@ -39,13 +39,21 @@ class CustomUser(AbstractUser):
         validators=[validate_email],
         unique=True
     )
-    fname = models.CharField(
-        verbose_name='First Name', 
-        max_length=150
+    full_name = models.CharField(
+        verbose_name='Full Name', 
+        max_length=255
     )
-    lname = models.CharField(
-        verbose_name='Last Name', 
-        max_length=150
+    is_waiter = models.BooleanField(
+        verbose_name='Is waiter?',
+        default=False,
+        null=True,
+        blank=True
+    )
+    is_client = models.BooleanField(
+        verbose_name='Is client?',
+        default=False,
+        null=True,
+        blank=True
     )
     username = models.CharField(
         max_length=100, 
@@ -58,7 +66,7 @@ class CustomUser(AbstractUser):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['first_name', 'last_name' ]
+    REQUIRED_FIELDS = ['full_name']
 
     def __str__(self) -> str:
         return self.email
