@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-k*k!)t97ve6+!mu$cc-d+o%xyh$_8c$c)z4wn-22l&zbhhvw-6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', '37f6-45-235-133-38.ngrok-free.app']
 
 
 # Application definition
@@ -46,11 +46,13 @@ INSTALLED_APPS = [
     'taggit',
     'django_extensions',
     'widget_tweaks',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -152,3 +154,15 @@ MESSAGE_TAGS = {
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = (604800 * 3)  # 3 weeks in seconds
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://37f6-45-235-133-38.ngrok-free.app',
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    'http://localhost:8000',
+    'http://127.0.0.1:8000',
+    'https://37f6-45-235-133-38.ngrok-free.app',
+]
