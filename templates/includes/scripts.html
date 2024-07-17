@@ -5,4 +5,10 @@
     document.body.addEventListener("htmx:configRequest", (event) => {
         event.detail.headers["X-CSRFToken"] = "{{ csrf_token }}";
     });
+
+    const toggleSide = () => {
+        // Responsible to toggle offcanvas
+        const button = document.getElementById('navbarSideCollapse')
+        button.click()
+    }
 </script>
