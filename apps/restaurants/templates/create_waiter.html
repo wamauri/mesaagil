@@ -5,6 +5,7 @@
     <h1>Cadastrar Garçon</h1>
     {% include "partials/messages.html" %}
     <form autocomplete="off" novalidate>
+      {% csrf_token %}
       {% include "partials/form.html" with form=form %}
       <div class="d-flex flex-column gap-2 mt-3">
         <button class="btn btn-lg btn-primary" type="submit"
