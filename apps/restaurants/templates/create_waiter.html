@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <div class="container">
+    <h1>Cadastrar Garçon</h1>
+    {% include "partials/messages.html" %}
+    <form autocomplete="off" novalidate>
+      {% include "partials/form.html" with form=form %}
+      <div class="d-flex flex-column gap-2 mt-3">
+        <button class="btn btn-lg btn-primary" type="submit"
+          hx-post="{% url "waiter:new" %}"
+          hx-target="this">
+          Cadastrar
+        </button>
+        <button class="btn btn-lg btn-secondary" type="reset">Cancelar</button>
+      </div>                                                                       
+    </form>
+  </div>
+{% endblock content %}
