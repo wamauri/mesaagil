@@ -39,7 +39,9 @@ def login_view(request):
             messages.add_message(
                 request=request, 
                 level=messages.WARNING, 
-                message='Não foi possível encontrar o usuário.'
+                message='Email ou Senha icorreto!\
+                     Não foi possível encontrar o usuário.\
+                     Tente novamente.'
             )
             return render(
                 request=request, 
