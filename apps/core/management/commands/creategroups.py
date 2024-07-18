@@ -40,6 +40,10 @@ class Command(BaseCommand):
                     )
                     group.permissions.add(permission)
                 except Permission.DoesNotExist:
-                    self.stdout.write(self.style.ERROR(f'Permission "{codename}" not found'))
+                    self.stdout.write(
+                        self.style.ERROR(f'Permission "{codename}" not found')
+                    )
 
-        self.stdout.write(self.style.SUCCESS('Groups and permissions have been set up'))
+        self.stdout.write(
+            self.style.SUCCESS('Groups and permissions have been set up')
+        )
