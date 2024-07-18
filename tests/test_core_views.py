@@ -3,10 +3,10 @@ import logging
 import pytest
 from django.urls import reverse
 from django.test import Client
-from django.test import RequestFactory
 from django.test.utils import override_settings
+from django.core.management import call_command
 
-from core.models import CustomUser
+from apps.core.models import CustomUser
 from .fixtures import *
 
 logger = logging.getLogger(__name__)
@@ -22,6 +22,7 @@ class TestViews:
             'password': '12345678',
         }
         self.u = CustomUser.objects.create_user(**self.credentials)
+        call_command('creategroups')
 
     def test_home_view_return_200(self):
         self.c.force_login(self.u)
@@ -116,4 +117,39 @@ class TestViews:
             }
         )
         messages = list(res.context['messages'])
-        assert str(messages[0]) == 'Não foi possível encontrar o usuário.'
+        assert str(messages[0]) == 'Email ou Senha icorreto!\
+                     Não foi possível encontrar o usuário.\
+                     Tente novamente.'
+
+    def test_create_waiter_status_200(self):
+        self.c.force_login(self.u)
+        res = self.c.get(reverse('waiter:new'))
+        assert res.status_code == 200
+
+    def test_create_waiter_success(self):
+        self.c.force_login(self.u)
+        res = self.c.post(
+            reverse('waiter:new'),
+            {
+                'email': 'example@example.com', 
+                'full_name': 'example full name', 
+                'password': '12345678'
+            }
+        )
+        messages = list(res.context['messages'])
+        assert res.status_code == 200
+        assert str(messages[0]) == 'Garçon criado com sucesso!'
+
+    def test_create_waiter_without_data_field_couse_error(self):
+        self.c.force_login(self.u)
+        res = self.c.post(
+            reverse('waiter:new'),
+            {
+                'email': 'example@example.com', 
+                'full_name': '', 
+                'password': '12345678'
+            }
+        )
+        messages = list(res.context['messages'])
+        assert res.status_code == 200
+        assert str(messages[0]) == 'Algo deu errado ao criar Garçon!'

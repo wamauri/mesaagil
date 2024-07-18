@@ -1,6 +1,6 @@
 import pytest
 
-from core.models import CustomUser
+from apps.core.models import CustomUser
 
 
 class TestCoreModels:
