@@ -2,15 +2,15 @@
 <!doctype html>
 <html lang="en" data-bs-theme="auto" hx-swap-oob="true">
   <head>
-    {% block title %}<title>Mesa Rapida | Entrar</title>{% endblock title %}
+    {% block title %}<title>Mesaagil | Entrar</title>{% endblock title %}
     {% include "includes/head.html" %}
   </head>
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
     {% include "includes/color_mode.html" %}
     <main class="form-signin w-100 mt-5 mb-5 m-auto">
       <form method="POST"> {% csrf_token %}
-        <img class="mb-3" src="{% static 'img/brand/apple-touch-icon.png'%}" alt="Mesa Rapida logo" width="72" height="72">
-        <h1 class="h3 mb-3 fw-normal">Mesa Rápida</h1>
+        <img class="mb-3" src="{% static 'img/brand/apple-touch-icon.png'%}" alt="Mesaagil logo" width="72" height="72">
+        <h1 class="h3 mb-3 fw-normal">Mesaagil</h1>
       <!-- Messages -->
        {% include "partials/messages.html" %}
         <div class="form-floating">
@@ -28,8 +28,8 @@
             Remember me
           </label>
         </div>
-        <button class="btn btn-primary w-100 py-2" type="submit">Entrar</button>
-        <p class="mt-5 mb-3 text-body-secondary">&copy; Mesa Rápida - 2024</p>
+        <button class="btn btn-danger w-100 py-2" type="submit">Entrar</button>
+        <p class="mt-5 mb-3 text-body-secondary">&copy; Mesaagil - 2024</p>
       </form>
     </main>
     <script src="{% static "bootstrap/js/bootstrap.bundle.min.js" %}" defer></script>

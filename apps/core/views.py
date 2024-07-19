@@ -69,7 +69,7 @@ def logout_view(request):
     messages.add_message(
         request=request, 
         level=messages.SUCCESS, 
-        message='Você saiu do Mesa Rápida, volte sempre!'
+        message='Você saiu do Mesaagil, volte sempre!'
     )
     logout(request)
 
