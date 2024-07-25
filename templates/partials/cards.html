@@ -1,28 +1,31 @@
+{% load humanize %}
 {% if user.groups.last.name == 'Waiter' %}
-<div class="card my-3">
-  {% comment %} <img src="..." class="card-img-top" alt="..."> {% endcomment %}
-  <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
-    <title>Placeholder</title>
-    <rect width="100%" height="100%" fill="#868e96"></rect>
-    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-  </svg>
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+{% for product in products %}
+  <div class="card my-3">
+    {% if product.food_image %}
+    <img src="{{ product.food_image.image.url }}" class="card-img-top" alt="Imagem do Produto" width="100%" height="250">
+    {% else %}
+    <svg class="bd-placeholder-img card-img-top" width="100%" height="200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+      <title>Placeholder</title>
+      <rect width="100%" height="100%" fill="#868e96"></rect>
+      <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+    </svg>
+    {% endif %}
+    <div class="card-body">
+      <h5 class="card-title">{{ product.name }}</h5>
+      <p class="card-text text-break">{{ product.description }}</p>
+      <div class="d-flex justify-content-between">
+        <button class="btn btn-outline-danger rounded-pill" type="button">Pedir</button>
+        <button class="btn btn-light rounded-start-pill disabled fw-bold" type="button">R$ {{ product.price|floatformat:2|intcomma }}</button>
+      </div>
+    </div>
+    <div class="card-footer">
+      {% for category in product.category.all %} 
+      <span class="badge rounded-bottom-pill text-bg-light">
+        {{category}} 
+      </span>
+      {% endfor %}
+    </div>
   </div>
-</div>
-<div class="card">
-  {% comment %} <img src="..." class="card-img-top" alt="..."> {% endcomment %}
-  <svg class="bd-placeholder-img card-img-top" width="100%" height="180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
-    <title>Placeholder</title>
-    <rect width="100%" height="100%" fill="#868e96"></rect>
-    <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
-  </svg>
-  <div class="card-body">
-    <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
-  </div>
-</div>
+{% endfor %}
 {% endif %}
