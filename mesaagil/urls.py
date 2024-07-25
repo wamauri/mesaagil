@@ -16,15 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from apps.core.views import overview, dashboard
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path(route='', view=include('apps.core.urls')),
     path(route='admin/', view=admin.site.urls),
     path(route='accounts/', view=include('django.contrib.auth.urls')),
-    path(
-        route='restaurants/waiters/', 
-        view=include(('apps.restaurants.urls', 'restaurants'), namespace='waiter'),
-    ),
+    path(route='restaurants/', view=include('apps.restaurants.urls')),
 ]
 
 htmx_urlpatterns = [
@@ -33,3 +32,6 @@ htmx_urlpatterns = [
 ]
 
 urlpatterns += htmx_urlpatterns
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

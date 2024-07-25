@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 
 from utils.utils import build_next_path, get_next_path, get_remeber
+from apps.restaurants.models import Products
 
 logger = logging.getLogger(__name__)
 
@@ -80,9 +81,14 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect(build_next_path(request))
 
+    context = {}
+    products = Products.objects.all()
+    context = {'products': products}
+
     return render(
         request=request,
-        template_name='base.html'
+        template_name='base.html',
+        context=context
     )
 
 
