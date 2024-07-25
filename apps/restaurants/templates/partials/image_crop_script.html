@@ -1,0 +1,62 @@
+<script defer>
+  document.addEventListener('DOMContentLoaded', function () {
+    var cropper;
+    var imageInput = document.getElementById('id_image');
+    var imagePreview = document.getElementById('image-preview');
+    var croppedImage = document.getElementById('cropped-image');
+    var imageData = document.getElementById('image-data');
+    var cropperModal = new bootstrap.Modal(document.getElementById('cropperModal'));
+    var cropImageButton = document.getElementById('crop-image-button');
+
+    imageInput.addEventListener('change', function (event) {
+      var files = event.target.files;
+      if (files && files.length > 0) {
+        var file = files[0];
+        var reader = new FileReader();
+        reader.onload = function (e) {
+          imagePreview.src = e.target.result;
+          imagePreview.style.display = 'block';
+          if (cropper) {
+            cropper.destroy();
+          }
+          cropper = new Cropper(imagePreview, {
+            aspectRatio: 1,
+            viewMode: 3,
+            autoCropArea: 1,
+            movable: false,
+            rotatable: false,
+            scalable: false
+          });
+          cropperModal.show();
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    cropImageButton.addEventListener('click', function () {
+      if (cropper) {
+        var canvas = cropper.getCroppedCanvas({
+          width: 250,
+          height: 250,
+        });
+        canvas.toBlob(function (blob) {
+          var reader = new FileReader();
+          reader.onloadend = function () {
+            imageData.value = reader.result;
+            croppedImage.src = reader.result;
+            croppedImage.style.display = 'block';
+            cropperModal.hide();
+          };
+          reader.readAsDataURL(blob);
+        });
+      }
+    });
+
+    document.getElementById('productsForm').addEventListener('submit', function (event) {
+      if (!imageData.value) {
+        event.preventDefault();
+        alert('Please select and crop an image before submitting.');
+      }
+    });
+  });
+</script>
