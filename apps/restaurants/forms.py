@@ -1,6 +1,8 @@
+import decimal
 from django import forms
 
 from apps.core.models import CustomUser
+from apps.restaurants.models import Products, FoodImage
 
 
 class WaiterForm(forms.ModelForm):
@@ -34,3 +36,54 @@ class WaiterForm(forms.ModelForm):
     class Meta:
         model = CustomUser
         fields = ('email', 'full_name', 'password')
+
+
+class ProductsForm(forms.ModelForm):
+    name = forms.CharField(
+        required=True,
+        label='Nome do Produto',
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': '',
+            }
+        )
+    )
+    description = forms.CharField(
+        label='Descrição/Modo de Preparo',
+        widget=forms.Textarea(
+            attrs={
+                'cols': 80,
+                'rows': 2,
+                
+            }
+        )
+    )
+    price = forms.CharField(
+        required=True,
+        label='Preço',
+        widget=forms.TextInput(
+            attrs={
+                'placeholder': '',
+                'value': '',
+            }
+        )
+    )
+    class Meta:
+        model = Products
+        fields = ('name', 'description', 'price')
+
+    def clean_price(self):
+        price = self.cleaned_data.get('price')
+        if price:
+            price = price.replace('.', '').replace(',', '.')
+            try:
+                price = decimal.Decimal(price)
+            except decimal.DecimalException:
+                raise forms.ValidationError("Preço inválido.")
+        return price
+
+
+class FoodImageForm(forms.ModelForm):
+    class Meta:
+        model = FoodImage
+        fields = ['image']
