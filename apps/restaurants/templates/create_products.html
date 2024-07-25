@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load widget_tweaks %}
+
+{% block content %}
+  <div class="container my-4">
+    <h1>Cadastrar Produto</h1>
+    {% include "partials/messages.html" %}
+    <form id="productsForm" autocomplete="off" enctype="multipart/form-data" novalidate hx-post="{% url "products-new" %}" hx-trigger="submit">
+      {% csrf_token %}
+      {# Produto form #}
+      {% include "partials/form.html" with form=pform %}
+      {# Categoria/Tag input #}
+      <div id="tags" class="my-2"></div>
+      <input name="tags" type="hidden">
+      <label for="tag-input">Categoria:</label>
+      <div class="form-group">
+        <input type="text" id="tag-input" class="form-control form-control-lg my-2">
+      </div>
+      <p class="form-text text-muted">Após digitar a categoria aperte enter.</p>
+      {# Image Preview #}
+      <div class="mb-3">
+        <img class="img-thumbnail" id="cropped-image" src="#" style="display: none;">
+      </div>
+      {# Image form #}
+      {% for field in iform.visible_fields %}
+        <div class="d-flex flex-column gap-2">
+          <label class="btn btn-lg btn-outline-success" for="id_image">Adicionar Imagem</label>
+        </div>
+        {% render_field field class="d-none" %}
+      {% endfor %}
+      <input type="hidden" name="image_data" id="image-data">
+      {# Buttons #}
+      <div class="d-flex flex-column gap-2 mt-3">
+        <button class="btn btn-lg btn-danger" type="submit">
+          Cadastrar
+        </button>
+        <button class="btn btn-lg btn-secondary" type="reset">Cancelar</button>
+      </div>                                                                       
+    </form>
+  </div>
+  {# Crop Image Modal #}
+  {% endblock content %}
+  
+{% block scripts %} {{ block.super }}
+  {% include "partials/modal_image_cropper.html" %}
+  {% include "partials/tag_script.html" %}
+  {% include "partials/image_crop_script.html" %}
+{% endblock scripts %}
