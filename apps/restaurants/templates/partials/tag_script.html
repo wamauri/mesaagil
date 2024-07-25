@@ -1,0 +1,36 @@
+  <script defer>
+    $(document).ready(function () {
+      var tags = [];
+
+      function addTag(tag) {
+        if (tag && !tags.includes(tag)) {
+            tags.push(tag);
+            $(`<button type="button" class="category rounded-bottom-pill btn btn-sm btn-light position-relative my-1 me-4">${tag}<span class="remove-tag position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">&times;</span></button>`).insertBefore('#tags');
+        }
+        $('#tag-input').val('');
+        $('input:hidden[name=tags]').val(tags);
+      }
+
+      function removeTag(tag) {
+        tags = tags.filter(t => t !== tag.slice(0, -1)); // Tags que sobraram na lista
+        $('.category').filter(function () {
+            return $(this).text().trim() === tag;
+        }).remove();
+      }
+
+      $('#tag-input').on('keypress', function (e) {
+        if (e.which === 13) {
+            e.preventDefault();
+            addTag($(this).val().trim());
+        }
+      });
+
+      $(document).on('click', '.remove-tag', function () {
+        var tag = $(this).parent().text().trim();
+        removeTag(tag);
+        $('input:hidden[name=tags]').val(tags);
+      });
+
+      $('#id_price').mask('#.##0,00', {reverse: true});
+    });
+  </script>
