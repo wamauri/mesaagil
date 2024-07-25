@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-k*k!)t97ve6+!mu$cc-d+o%xyh$_8c$c)z4wn-22l&zbhhvw-6
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '37f6-45-235-133-38.ngrok-free.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',
     'apps.core',
     'apps.restaurants',
@@ -116,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Sao_Paulo'
 
 USE_I18N = True
 
@@ -130,6 +131,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
@@ -158,11 +162,14 @@ SESSION_COOKIE_AGE = (604800 * 3)  # 3 weeks in seconds
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'https://37f6-45-235-133-38.ngrok-free.app',
+    'https://e9d4-45-235-133-0.ngrok-free.app',
 ]
 
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:8000',
     'http://127.0.0.1:8000',
-    'https://37f6-45-235-133-38.ngrok-free.app',
+    'https://e9d4-45-235-133-0.ngrok-free.app',
 ]
+
+DECIMAL_SEPARATOR = ','
+USE_THOUSAND_SEPARATOR = True
