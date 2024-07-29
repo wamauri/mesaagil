@@ -123,13 +123,13 @@ class TestViews:
 
     def test_create_waiter_status_200(self):
         self.c.force_login(self.u)
-        res = self.c.get(reverse('waiter:new'))
+        res = self.c.get(reverse('waiters-new'))
         assert res.status_code == 200
 
     def test_create_waiter_success(self):
         self.c.force_login(self.u)
         res = self.c.post(
-            reverse('waiter:new'),
+            reverse('waiters-new'),
             {
                 'email': 'example@example.com', 
                 'full_name': 'example full name', 
@@ -143,7 +143,7 @@ class TestViews:
     def test_create_waiter_without_data_field_couse_error(self):
         self.c.force_login(self.u)
         res = self.c.post(
-            reverse('waiter:new'),
+            reverse('waiters-new'),
             {
                 'email': 'example@example.com', 
                 'full_name': '', 

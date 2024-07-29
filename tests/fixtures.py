@@ -1,6 +1,11 @@
+import base64
+
 import pytest
 from django.test import Client
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
+
+from apps.restaurants.models import FoodImage
 
 available_fixtures = [
     "admin_client", 
@@ -69,3 +74,31 @@ def user(db, django_user_model):
         email='test@test.com',
         password='12345678',
     )
+
+@pytest.fixture
+def image(db):
+    with open('tests/assets/preview.jpg', 'rb') as img:
+        file = SimpleUploadedFile(
+            name='preview.jpg', 
+            content=img.read(), 
+            content_type='image/jpeg'
+        )
+        food_image = FoodImage(image=file)
+        
+        return food_image
+
+@pytest.fixture
+def image_file(db):
+    with open('tests/assets/preview.jpg', 'rb') as img:
+        file = SimpleUploadedFile(
+            name='preview.jpg', 
+            content=img.read(), 
+            content_type='image/jpeg'
+        )
+        return file
+
+@pytest.fixture
+def valid_image_data(db, image_file):
+    return {
+        'image_data': 'data:image/jpeg;base64,' + base64.b64encode(image_file.read()).decode(),
+    }
