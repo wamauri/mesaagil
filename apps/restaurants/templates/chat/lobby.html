@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <form id="ws">
+    <div class="mb-3">
+      <label for="" class="form-label">WebSocket Messages</label>
+      <input class="form-control" type="text" name="message"/>
+      <small id="helpId" class="form-text text-muted">Help text</small>
+    </div>
+    <div id="message" class="mb-3"></div>
+  </form>
+{% endblock content %}
+{% block scripts %} {{ block.super }}
+  <script type='text/javascript'>
+    const url = `ws://localhost:8001/ws/chat/`
+    const ws = new WebSocket(url);
+
+    ws.onopen = () => {
+      console.log('WebSocket connection opened');
+      //ws.send(JSON.stringify({ message: 'Hello, WebSocket' }));
+    };
+
+    ws.onmessage = (e) => {
+      let data = JSON.parse(e.data)
+      //console.log('Message from server:', data);
+
+      if(data.type === 'chat'){
+        $('#message').append(`<div><p>${data.message}</p></div>`)
+      }
+    };
+
+    ws.onclose = () => {
+      console.log('WebSocket connection closed');
+    };
+
+    $('#ws').on('submit', (e) => {
+      e.preventDefault();
+      let message = e.target.message.value;
+      ws.send(JSON.stringify({
+        'message': message
+      }));
+      $('#ws').trigger('reset');
+    })
+  </script>
+{% endblock scripts %}
