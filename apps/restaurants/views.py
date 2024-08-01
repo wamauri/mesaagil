@@ -70,7 +70,6 @@ def create_products(request):
         tags = [tag.upper() for tag in request.POST.get('tags').split(',')]
 
         if pform.is_valid() and iform.is_valid() and image:
-
             compressed_image = compress_image(image)
             food_image = FoodImage()
             food_image.image.save(compressed_image.name, compressed_image)
@@ -129,3 +128,7 @@ def get_products_tagged(request):
         return redirect(build_next_path(request))
     # Products.objects.filter(category__name__in=['T1'])
     return TaggedItem.objects.all()
+
+
+def lobby(request):
+    return render(request, 'chat/lobby.html')

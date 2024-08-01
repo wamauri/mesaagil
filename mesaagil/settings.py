@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'widget_tweaks',
     'corsheaders',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -80,7 +81,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'mesaagil.wsgi.application'
-
+ASGI_APPLICATION = 'mesaagil.asgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
@@ -173,3 +174,9 @@ CSRF_TRUSTED_ORIGINS = [
 
 DECIMAL_SEPARATOR = ','
 USE_THOUSAND_SEPARATOR = True
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels.layers.InMemoryChannelLayer',
+    },
+}
