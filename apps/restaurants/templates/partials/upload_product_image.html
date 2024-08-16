@@ -1,0 +1,26 @@
+{% load widget_tweaks %}
+
+  <h1>Adicionar Imagem</h1>
+  <form hx-post="{% url 'add-image-product' product.id %}" id="uploadProductsImageForm" autocomplete="off" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {# Image Preview #}
+    <div class="mb-3">
+      <img class="img-thumbnail" id="cropped-image" src="#" style="display: none;">
+    </div>
+    {# Image form #}
+    {% for field in form.visible_fields %}
+      <div class="d-flex flex-column gap-2">
+        <label class="btn btn-lg btn-outline-success" for="id_image">Adicionar Imagem</label>
+      </div>
+      {% render_field field class="d-none" %}
+    {% endfor %}
+    <input type="hidden" name="image_data" id="image-data">
+  </form>
+  {# Buttons #}
+  <div class="d-flex flex-column gap-2 mt-3">
+    <button class="btn btn-lg btn-danger" form="uploadProductsImageForm" type="submit">
+      Continuar
+    </button>
+    <button class="btn btn-lg btn-secondary" form="uploadProductsImageForm" type="reset">Cancelar</button>
+  </div>
+  {% include "partials/modal_image_cropper.html" %}
