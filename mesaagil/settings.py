@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'widget_tweaks',
     'corsheaders',
     'channels',
+    'mptt',
 ]
 
 MIDDLEWARE = [

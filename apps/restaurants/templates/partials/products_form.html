@@ -1,0 +1,19 @@
+{% load widget_tweaks %}
+
+<div id="createProduct">
+  <form method="post" hx-post="{% url 'products-new' %}" id="productsForm" autocomplete="off" novalidate>
+    <h1>Adicionar Produto</h1>
+    {% csrf_token %}
+    {# Produto form #}
+    {% include "partials/form.html" with form=form %}
+    {# Buttons #}
+    <div class="d-flex flex-column gap-2 mt-3">
+      <button class="btn btn-lg btn-danger" type="submit" 
+        hx-target="#createProduct"
+        hx-trigger="submit">
+        Continuar
+      </button>
+      <button class="btn btn-lg btn-secondary" type="reset">Cancelar</button>
+    </div>
+  </form>
+</div>

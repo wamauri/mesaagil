@@ -1,14 +1,16 @@
-import io, base64
-
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import Group
 from django.contrib import messages
 from taggit.models import Tag, TaggedItem
 
 from utils.utils import build_next_path
 from utils.images import compress_image
-from .forms import WaiterForm, ProductsForm, FoodImageForm
-from .models import FoodImage
+from .forms import (
+    WaiterForm, ProductsForm, 
+    FoodImageForm, CategoryForm, 
+    SelectCategoryForm
+)
+from .models import FoodImage, Category, Products
 
 
 def create_waiter(request):
@@ -61,59 +63,113 @@ def create_products(request):
     if not request.user.is_authenticated:
         return redirect(build_next_path(request))
 
-    context = {}
+    if request.method == 'POST':
+        form = ProductsForm(request.POST)
+
+        if form.is_valid():
+            product = form.save(commit=False)
+            product.user = request.user
+            product.save()
+
+            return render(
+                request=request, 
+                template_name='partials/upload_product_image.html', 
+                context={'product': product, 'form': FoodImageForm()}
+            )
+    else:
+        form = ProductsForm()
+
+    return render(
+        request=request, 
+        template_name='create_products.html', 
+        context={'form': form}
+    )
+
+
+def upload_product_image(request, product_id):
+    if not request.user.is_authenticated:
+        return redirect(build_next_path(request))
+
+    product = get_object_or_404(Products, id=product_id)
 
     if request.method == 'POST':
-        pform = ProductsForm(request.POST or None)
-        iform = FoodImageForm(request.POST, request.FILES)
+        form = FoodImageForm(request.POST, request.FILES, instance=product)
         image = request.POST.get('image_data')
-        tags = [tag.upper() for tag in request.POST.get('tags').split(',')]
 
-        if pform.is_valid() and iform.is_valid() and image:
+        if form.is_valid() and image:
             compressed_image = compress_image(image)
             food_image = FoodImage()
             food_image.image.save(compressed_image.name, compressed_image)
             food_image.save()
-
-            product = pform.save()
-            for tag in tags:
-                product.category.add(tag)
             product.food_image = food_image
-            product.user = request.user
             product.save()
-            context['pform'] = ProductsForm()
-            context['iform'] = FoodImageForm()
-            
+
             messages.add_message(
                 request=request, 
                 level=messages.SUCCESS, 
-                message=f'{product.name} criado com sucesso!'
+                message=f'Imagem para {product.name} adicionado com sucesso!'
             )
+            context = {
+                'categories': Category.objects.all(),
+                'form': CategoryForm(),
+                'form_select': SelectCategoryForm(),
+                'product': product
+            }
 
             return render(
                 request=request, 
-                template_name='create_products.html', 
+                template_name='category.html', 
+                context=context
+            )
+    else:
+        form = FoodImageForm(instance=product)
+    return render(
+        request=request, 
+        template_name='upload_product_image.html', 
+        context={'form': form, 'product': product}
+    )
+
+
+def add_product_category(request, product_id: int):
+
+    if request.method == "POST":
+        category_id = int(request.POST.get('parent'))
+        category = get_object_or_404(Category, id=category_id)
+        product = get_object_or_404(Products, id=product_id)
+        product.category = category
+        product.save()
+
+        return redirect('/')
+
+
+def add_category(request, product_id: int):
+    if request.method == 'POST':
+        product = get_object_or_404(Products, id=product_id)
+        form = CategoryForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+
+            context = {
+                'categories': Category.objects.all(),
+                'form': CategoryForm(),
+                'form_select': SelectCategoryForm(),
+                'product': product
+            }
+
+            return render(
+                request=request, 
+                template_name='category.html', 
                 context=context
             )
 
-        messages.add_message(
-            request=request, 
-            level=messages.ERROR, 
-            message='Algo deu errado ao criar produto!'
-        )
     else:
-        pform = ProductsForm()
-        iform = FoodImageForm()
-
-    context = {
-        'pform': pform,
-        'iform': iform,
-    }
+        form = CategoryForm()
 
     return render(
         request=request, 
-        template_name='create_products.html',
-        context=context
+        template_name='modal_add_category.html', 
+        context={'form': form}
     )
 
 
