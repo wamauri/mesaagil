@@ -1,0 +1,36 @@
+{% load widget_tweaks %}
+  <script defer>
+    function toggleCategoryField() {
+      let checkBox = document.getElementById("categoryCheckBox");
+      let subcategory = $("label[for=id_parent], #id_parent")
+      if (checkBox.checked == true){
+        subcategory.attr("style", "display: block;")
+      } else {
+        subcategory.attr("style", "display: none;")
+      }
+    }
+  </script>
+
+  <div class="modal" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addCategoryModalLabel">Nova Categoria</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="form-check form-switch">
+            <label class="form-check-label" for="categoryCheckBox">Essa nova categoria será subcategoria?</label>
+            <input class="form-check-input" type="checkbox" role="switch" id="categoryCheckBox" onclick="toggleCategoryField()">
+          </div>
+          <form hx-post="{% url 'add-category' product.id %}" id="addCategoriaForm" autocomplete="off" novalidate>
+            {% include "partials/form.html" with form=form %}
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" form="addCategoriaForm" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+          <button hx-target="#target" type="submit" form="addCategoriaForm" class="btn btn-outline-primary" data-bs-dismiss="modal">Criar</button>
+        </div>
+      </div>
+    </div>
+  </div>

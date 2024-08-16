@@ -1,5 +1,5 @@
 from django.db import models
-from taggit.managers import TaggableManager
+from mptt.models import MPTTModel, TreeForeignKey
 
 from apps.core.models import CustomUser
 
@@ -12,9 +12,32 @@ class FoodImage(models.Model):
         return self.image.name
 
 
+class Category(MPTTModel):
+    name = models.CharField(
+        verbose_name="Nome",
+        max_length=100
+    )
+    parent = TreeForeignKey(
+        to='self', 
+        on_delete=models.CASCADE, 
+        null=True, 
+        blank=True, 
+        related_name='children'
+    )
+
+    class MPTTMeta:
+        order_insertion_by = ['name']
+
+    def __str__(self):
+        return self.name
+
+
 class Products(models.Model):
-    category = TaggableManager(
-        verbose_name='Categoria',
+    category = models.ForeignKey(
+        to=Category, 
+        on_delete=models.CASCADE, 
+        related_name='products',
+        null=True,
         blank=True
     )
     name = models.CharField(

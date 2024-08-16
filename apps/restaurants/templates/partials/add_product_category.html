@@ -1,0 +1,18 @@
+{% load widget_tweaks %}
+
+  <form hx-post="{% url 'add-product-category' product.id %}" id="selectCategoriaForm" autocomplete="off" novalidate>
+    <label for="selectCat" class="form-label">Categoria para {{ product.name }}</label>
+    <div class="d-grid gap-2 col-12 mx-auto mb-3">
+      <div class="row">
+        <div class="col-10">
+          {% for field in form_select.visible_fields %}
+            {% render_field field id="selectCat" class="form-select form-select-lg" %}
+          {% endfor %}
+        </div>
+        <div class="col-2 d-grid ps-0">
+          <button type="button" class="btn btn-outline-primary btn-lg h3" data-bs-toggle="modal" data-bs-target="#addCategoryModal">+</button>
+        </div>
+      </div>
+    </div>
+  </form>
+  {% include "partials/modal_add_category.html" %}

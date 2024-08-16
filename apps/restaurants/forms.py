@@ -1,8 +1,9 @@
 import decimal
 from django import forms
+from mptt.forms import TreeNodeChoiceField
 
 from apps.core.models import CustomUser
-from apps.restaurants.models import Products, FoodImage
+from apps.restaurants.models import Products, FoodImage, Category
 
 
 class WaiterForm(forms.ModelForm):
@@ -87,3 +88,29 @@ class FoodImageForm(forms.ModelForm):
     class Meta:
         model = FoodImage
         fields = ['image']
+
+
+class CategoryForm(forms.ModelForm):
+    parent = TreeNodeChoiceField(
+        queryset=Category.objects.all(), 
+        level_indicator='──', 
+        label='Subcategoria de:',
+        required=False
+    )
+    class Meta:
+        model = Category
+        fields = ['name', 'parent']
+        labels = {
+            'parent': 'Subcategoria de:'
+        }
+
+
+class SelectCategoryForm(forms.ModelForm):
+    parent = TreeNodeChoiceField(
+        queryset=Category.objects.all(), 
+        level_indicator='──', 
+        label='Categorias:'
+    )
+    class Meta:
+        model = Category
+        fields = ['parent']

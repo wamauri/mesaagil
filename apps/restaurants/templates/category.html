@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% load static %}
+
+  {% block content %}
+    <div class="container row-cols-1 my-4">
+      <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mx-lg-auto mx-xl-auto mx-xxl-auto">
+        <h1>Categorias</h1>
+        {% include "partials/add_product_category.html" %}
+        {# Buttons #}
+        <div class="d-flex flex-column gap-2 mt-3">
+          <button class="btn btn-lg btn-danger" form="selectCategoriaForm" type="submit">
+            Continuar
+          </button>
+          <button class="btn btn-lg btn-secondary" form="productsForm" type="reset">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  {% endblock content %}
