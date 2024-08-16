@@ -13,7 +13,9 @@
       <!-- Content -->
       <div class="container-fluid" id="target" hx-swap-oob="true">
         {% block content %}
-        {% include "partials/cards.html" %}
+        <div class="row row-cols-4 mx-auto">
+          {% include "partials/cards.html" %}
+        </div>
         {% endblock content %}
       </div>
     </main>
