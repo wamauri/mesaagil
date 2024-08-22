@@ -3,8 +3,8 @@ import os
 import pytest
 
 from apps.core.models import CustomUser
-from apps.restaurants.models import FoodImage, Products
-from .fixtures import image, user, image_file
+from apps.restaurants.models import FoodImage, Products, Category
+from .fixtures import image, user, image_file, category
 
 
 class TestCoreModels:
@@ -57,17 +57,16 @@ class TestCoreModels:
         assert user.is_superuser == True
         assert user.is_staff == True
 
-    def test_product_model_str_method(self, image, user):
+    def test_product_model_str_method(self, category, user):
         product = Products.objects.create(
-            category='category',
-            name='name',
-            description='description',
-            price=99.99,
-            food_image=image.save(),
+            category=category,
+            name='Porção de Carne do Sol',
+            description='Descrição da porção de carne do sol',
+            price='99.99',
             user=user,
         )
-        assert str(product) == 'name'
-        os.remove('media/food_images/preview.jpg')
+        assert str(product) == 'Porção de Carne do Sol'
+        assert product.description == 'Descrição da porção de carne do sol'
 
     def test_food_image_str_method(self, image_file):
         food_image = FoodImage(image=image_file)

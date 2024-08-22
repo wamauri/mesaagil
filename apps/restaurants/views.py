@@ -125,7 +125,7 @@ def upload_product_image(request, product_id):
         form = FoodImageForm(instance=product)
     return render(
         request=request, 
-        template_name='upload_product_image.html', 
+        template_name='partials/upload_product_image.html', 
         context={'form': form, 'product': product}
     )
 
@@ -143,8 +143,9 @@ def add_product_category(request, product_id: int):
 
 
 def add_category(request, product_id: int):
+    product = get_object_or_404(Products, id=product_id)
+
     if request.method == 'POST':
-        product = get_object_or_404(Products, id=product_id)
         form = CategoryForm(request.POST)
 
         if form.is_valid():
@@ -165,11 +166,15 @@ def add_category(request, product_id: int):
 
     else:
         form = CategoryForm()
+        context = {
+            'form': form,
+            'product': product
+        }
 
     return render(
         request=request, 
-        template_name='modal_add_category.html', 
-        context={'form': form}
+        template_name='partials/modal_add_category.html', 
+        context=context
     )
 
 

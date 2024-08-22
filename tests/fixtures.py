@@ -5,7 +5,7 @@ from django.test import Client
 from django.urls import reverse
 from django.core.files.uploadedfile import SimpleUploadedFile
 
-from apps.restaurants.models import FoodImage
+from apps.restaurants.models import FoodImage, Products, Category
 
 available_fixtures = [
     "admin_client", 
@@ -70,7 +70,7 @@ available_fixtures = [
 
 @pytest.fixture
 def user(db, django_user_model):
-    return django_user_model.objects.create(
+    return django_user_model.objects.create_user(
         email='test@test.com',
         password='12345678',
     )
@@ -102,3 +102,11 @@ def valid_image_data(db, image_file):
     return {
         'image_data': 'data:image/jpeg;base64,' + base64.b64encode(image_file.read()).decode(),
     }
+
+@pytest.fixture
+def product(db):
+    return Products.objects.create(name='Test Product')
+
+@pytest.fixture
+def category(db):
+    return Category.objects.create(name='Category1')
