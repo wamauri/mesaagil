@@ -9,4 +9,6 @@ urlpatterns = [
     path(route='lobby/', view=views.lobby, name='lobby-chat' ),
     path(route='product/add/category/<int:product_id>', view=views.add_product_category, name='add-product-category'),
     path(route='category/<int:product_id>', view=views.add_category, name='add-category'),
+    path(route='product-detail/<int:product_id>', view=views.product_detail, name='product-detail'),
+    path(route='filter-products/', view=views.filter_products_by_category, name='filter-products'),
 ]

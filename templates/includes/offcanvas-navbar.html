@@ -52,12 +52,6 @@
         <li class="nav-item">
           <a class="nav-link" hx-on:click="toggleSide()" aria-current="page" href="{% url 'products-new' %}">Produtos</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" hx-on:click="toggleSide()" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" hx-on:click="toggleSide()" href="{% url 'overview' %}">Overview</a>
-        </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Settings</a>
           <ul class="dropdown-menu">
@@ -73,19 +67,21 @@
     </div>
   </div>
 </nav>
-<div class="nav-scroller bg-body shadow-sm">
-  <nav class="nav" aria-label="Secondary navigation">
-    <a class="nav-link active" aria-current="page" href="#">Dashboard</a>
-    <a class="nav-link" href="#">
-      Friends
-      <span class="badge text-bg-light rounded-pill align-text-bottom">27</span>
-    </a>
-    <a class="nav-link" href="#">Explore</a>
-    <a class="nav-link" href="#">Suggestions</a>
-    <a class="nav-link" href="#">Link</a>
-    <a class="nav-link" href="#">Link</a>
-    <a class="nav-link" href="#">Link</a>
-    <a class="nav-link" href="#">Link</a>
-    <a class="nav-link" href="#">Link</a>
+<div hx-boost="false" class="nav-scroller bg-body shadow-sm">
+  <nav class="nav" aria-label="Secondary navigation" hx-target="#cards" hx-trigger="submit">
+    {% for category in categories %}
+      <form hx-post="{% url 'filter-products' %}" id="filterProducts{{category.id}}" method="post">{% csrf_token %}
+        <input type="hidden" name="category" value="{{ category.name }}">
+      </form>
+      <button class="nav-link" form="filterProducts{{category.id}}" type="submit"
+        >
+        {{ category.name }}
+        {% if category.products.all.count > 0 %}
+          <span class="badge text-bg-light rounded-pill align-text-bottom">
+            {{ category.products.all.count }}
+          </span>
+        {% endif %}
+      </button>
+    {% endfor %}
   </nav>
 </div>

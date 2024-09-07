@@ -178,6 +178,32 @@ def add_category(request, product_id: int):
     )
 
 
+def product_detail(request, product_id):
+    return render(
+        request=request, 
+        template_name='partials/modal_product_detail.html', 
+        context={'product_detail': get_object_or_404(Products, id=product_id)}
+    )
+
+
+def filter_products_by_category(request):
+    if not request.user.is_authenticated:
+        return redirect(build_next_path(request))
+
+    if request.method == 'POST':
+        category_name = request.POST.get('category')
+        category = Category.objects.filter(name=category_name)[0]
+        context = {
+            'products':  category.products.all(),
+        }
+
+        return render(
+            request=request, 
+            template_name='partials/cards.html', 
+            context=context
+        )
+
+
 def get_product_categories(request):
     if not request.user.is_authenticated:
         return redirect(build_next_path(request))

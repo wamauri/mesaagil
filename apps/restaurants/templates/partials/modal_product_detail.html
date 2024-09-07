@@ -1,0 +1,65 @@
+{% load humanize %}
+<div class="modal" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailLabel" aria-hidden="true">
+  <div style="width: 375px;" class="modal-dialog modal-dialog-centered mx-auto" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Faça seu pedido 🍲</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-0">
+        <div class="card my-0">
+          {% if product_detail.food_image.image.url %}
+            <img src="{{ product_detail.food_image.image.url }}" class="card-img-top" alt="Imagem do Produto" width="100%" height="200.19">
+          {% else %}
+            <svg class="bd-placeholder-img card-img-top" width="100%" height="190" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+              <title>Placeholder</title>
+              <rect width="100%" height="100%" fill="#868e96"></rect>
+              <text x="50%" y="50%" fill="#dee2e6" dy=".3em">Image cap</text>
+            </svg>
+          {% endif %}
+          <div class="card-body">
+            <h5 class="card-title">{% if product_detail %}{{ product_detail.name }}{% else %}{% endif %}</h5>
+            <p class="card-text">
+              {% if product_detail %}{{ product_detail.description|linebreaks }}{% else %}{% endif %}
+            </p>
+            <div class="d-flex justify-content-between">
+              <div class="input-group input-group-sm w-25">
+                <button id="minus" class="btn btn-sm btn-outline-secondary" type="button">-</button>
+                <span id="productQuantity" class="badge text-bg-light lh-lg">1</span>
+                <button id="plus" class="btn btn-sm btn-outline-secondary" type="button">+</button>
+              </div>
+              <span id="productPrice" class="badge text-bg-light lh-lg rounded-start-pill">
+                R$ {% if product_detail %}{{ product_detail.price|floatformat:2|intcomma }}{% else %}{% endif %}
+              </span>
+            </div>
+            <div class="d-flex flex-column mt-3">
+              <button class="btn btn-outline-success rounded" type="button">Confirmar</button>
+            </div>
+          </div>
+          <div class="card-footer">
+            {% if product_detail %}
+              {% if product_detail.category.get_ancestors %}
+                {% for category in product_detail.category.get_ancestors %} 
+                  <span class="badge rounded-pill text-bg-light">
+                    {{ category }}
+                  </span>
+                {% endfor %}
+              {% else %}
+              {% endif %}
+              {% if product_detail.category %}
+                <span class="badge rounded-pill text-bg-light">
+                  {{ product_detail.category.name }}
+                </span>
+              {% endif %}
+            {% else %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% comment %} <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="button" id="crop-image-button" class="btn btn-outline-primary">Editar</button>
+      </div> {% endcomment %}
+    </div>
+  </div>
+</div>
