@@ -13,9 +13,10 @@
       <!-- Content -->
       <div class="container-fluid" id="target" hx-swap-oob="true">
         {% block content %}
-        <div class="row row-cols-4 mx-auto">
-          {% include "partials/cards.html" %}
-        </div>
+          <div id="cards" class="row row-cols-xl-5 row-cols-lg-4 row-cols-md-3 row-cols-sm-2 justify-content-center">
+            {% include "partials/cards.html" %}
+          </div>
+          <div id="productDetail"></div>
         {% endblock content %}
       </div>
     </main>
