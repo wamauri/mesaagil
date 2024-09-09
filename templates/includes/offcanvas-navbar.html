@@ -50,10 +50,10 @@
     <div class="navbar-collapse offcanvas-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" hx-on:click="toggleSide()" aria-current="page" href="{% url 'products-new' %}">Produtos</a>
+          <a class="nav-link" hx-on:click="toggleSide()" aria-current="page" href="{% url 'products-new' %}"><i class="bi bi-receipt"> Produtos</i></a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Settings</a>
+          <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false"><i class="bi bi-gear"> Settings</i></a>
           <ul class="dropdown-menu">
             <li><a class="dropdown-item" hx-on:click="toggleSide()" href="{% url "waiters-new" %}">Cadastrar Garçon</a></li>
             <li><a class="dropdown-item" hx-boost="false" hx-on:click="toggleSide()" href="{% url 'logout' %}">Sair</a></li>
