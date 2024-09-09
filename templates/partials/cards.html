@@ -8,7 +8,7 @@
     <div class="row g-0 align-items-center">
       <div class="col-9 py-1">
         <div class="card-body p-0">
-          <p class="card-title fw-medium mt-1 mb-0">{{ product.name|truncatechars:25 }}</p>
+          <p class="card-title fw-medium mb-0">{{ product.name|truncatechars:25 }}</p>
           <p class="card-text text-body-secondary lh-sm mb-0">
             {{ product.description|linebreaksbr|truncatechars:50 }}
           </p>
@@ -16,7 +16,11 @@
         </div>
       </div>
       <div class="col-3 d-flex justify-content-end align-items-center">
-        <img src="{{ product.food_image.image.url }}" class="card-img w-auto my-1 py-1 rounded" style="height: 80px; width: 80px; object-fit: cover;"  alt="Imagem do Produto">
+        {% if product.food_image.thumbnail %}
+          <img src="{{ product.food_image.thumbnail.url }}" class="card-img w-auto my-1 py-1 rounded" style="height: 80px !important; width: 80px !important; object-fit: cover;"  alt="Imagem do Produto">
+        {% else %}
+          <img src="{{ product.food_image.image.url }}" class="card-img w-auto my-1 py-1 rounded" style="height: 80px !important; width: 80px !important; object-fit: cover;"  alt="Imagem do Produto">
+        {% endif %}
       </div>
     </div>
   </div>

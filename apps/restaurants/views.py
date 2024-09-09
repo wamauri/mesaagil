@@ -4,7 +4,7 @@ from django.contrib import messages
 from taggit.models import Tag, TaggedItem
 
 from utils.utils import build_next_path
-from utils.images import compress_image
+from utils.images import product_image_name, prepare_images
 from .forms import (
     WaiterForm, ProductsForm, 
     FoodImageForm, CategoryForm, 
@@ -96,12 +96,11 @@ def upload_product_image(request, product_id):
         form = FoodImageForm(request.POST, request.FILES, instance=product)
         image = request.POST.get('image_data')
 
+        if product:
+            file_name = product_image_name(product)
+
         if form.is_valid() and image:
-            compressed_image = compress_image(image)
-            food_image = FoodImage()
-            food_image.image.save(compressed_image.name, compressed_image)
-            food_image.save()
-            product.food_image = food_image
+            product.food_image = prepare_images(image, file_name)
             product.save()
 
             messages.add_message(

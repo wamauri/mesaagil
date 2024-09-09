@@ -20,12 +20,19 @@ export function initImageCropScript() {
           cropper = null;
         }
         cropper = new Cropper($imagePreview[0], {
-          aspectRatio: 1,
+          aspectRatio: 370 / 200,
           viewMode: 3,
           autoCropArea: 1,
           movable: false,
           rotatable: false,
-          scalable: false
+          scalable: false,
+          ready: function () {
+            // Set fixed crop box size to 370x200 pixels
+            cropper.setCropBoxData({
+              width: 370,
+              height: 200,
+            });
+          }
         });
         cropperModal.show();
       };
@@ -36,8 +43,8 @@ export function initImageCropScript() {
   $cropImageButton.off('click').on('click', function () {
     if (cropper) {
       var canvas = cropper.getCroppedCanvas({
-        width: 250,
-        height: 250,
+        width: 370,
+        height: 200,
       });
       canvas.toBlob(function (blob) {
         var reader = new FileReader();

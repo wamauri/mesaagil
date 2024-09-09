@@ -2,8 +2,37 @@ from django.contrib import admin
 
 from . import models
 
-admin.site.register(models.Products)
-admin.site.register(models.FoodImage)
+
+@admin.register(models.Products)
+class ProductsAdmin(admin.ModelAdmin):
+    list_fields = (
+        'id', 
+        'name', 
+        'description',
+        'price',
+        'category', 
+        'food_image',
+        'code',
+        'created_at',
+        'updated_at',
+    )
+    list_display = list_fields
+    list_display_links = ('id', 'name')
+
+
+@admin.register(models.FoodImage)
+class FoodImageAdmin(admin.ModelAdmin):
+    list_fields = (
+        'id', 
+        'image', 
+        'thumbnail', 
+        'code',
+        'created_at',
+        'updated_at',
+    )
+    list_display = list_fields
+    list_display_links = ('id', 'image')
+
 
 @admin.register(models.Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -15,6 +44,9 @@ class CategoryAdmin(admin.ModelAdmin):
         'rght',
         'tree_id',
         'level',
+        'code',
+        'created_at',
+        'updated_at',
     )
     list_display = list_fields
-    list_display_links = list_fields
+    list_display_links = ('id', 'name')

@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 from django.core.validators import validate_email
 from django.contrib.auth.models import BaseUserManager, AbstractUser
@@ -61,6 +63,12 @@ class CustomUser(AbstractUser):
         null=True,
         blank=True,
         default=''   
+    )
+    code = models.UUIDField(
+        verbose_name='Code',
+        primary_key=False,
+        default=uuid.uuid4,
+        editable=False
     )
 
     objects = UserManager()
