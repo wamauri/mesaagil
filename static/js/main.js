@@ -1,7 +1,7 @@
 import { initImageCropScript } from "./imageCrop.js"
 
 document.addEventListener("htmx:xhr:loadend", function(e) {
-  if(e.detail.elt.innerText === "Produtos"){
+  if(e.detail.elt.innerText.includes("Produtos")){
     $("#id_price").off("focus").on("focus", function() {
       $(this).mask("#.##0,00", {reverse: true});
     });
