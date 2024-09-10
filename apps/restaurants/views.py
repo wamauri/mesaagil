@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.models import Group
 from django.contrib import messages
-from taggit.models import Tag, TaggedItem
 
 from utils.utils import build_next_path
 from utils.images import product_image_name, prepare_images
@@ -10,7 +9,7 @@ from .forms import (
     FoodImageForm, CategoryForm, 
     SelectCategoryForm
 )
-from .models import FoodImage, Category, Products
+from .models import Category, Products
 
 
 def create_waiter(request):
@@ -130,6 +129,8 @@ def upload_product_image(request, product_id):
 
 
 def add_product_category(request, product_id: int):
+    if not request.user.is_authenticated:
+        return redirect(build_next_path(request))
 
     if request.method == "POST":
         category_id = int(request.POST.get('parent'))
@@ -142,6 +143,9 @@ def add_product_category(request, product_id: int):
 
 
 def add_category(request, product_id: int):
+    if not request.user.is_authenticated:
+        return redirect(build_next_path(request))
+
     product = get_object_or_404(Products, id=product_id)
 
     if request.method == 'POST':
@@ -178,6 +182,9 @@ def add_category(request, product_id: int):
 
 
 def product_detail(request, product_id):
+    if not request.user.is_authenticated:
+        return redirect(build_next_path(request))
+
     return render(
         request=request, 
         template_name='partials/modal_product_detail.html', 
@@ -186,34 +193,25 @@ def product_detail(request, product_id):
 
 
 def filter_products_by_category(request):
+    context = {}
+    products = None
     if not request.user.is_authenticated:
         return redirect(build_next_path(request))
 
     if request.method == 'POST':
         category_name = request.POST.get('category')
-        category = Category.objects.filter(name=category_name)[0]
-        context = {
-            'products':  category.products.all(),
-        }
+        category = Category.objects.filter(name=category_name)
+
+        if category:
+           products = category[0].products.all()
+
+        context['products'] =  products
 
         return render(
             request=request, 
             template_name='partials/cards.html', 
             context=context
         )
-
-
-def get_product_categories(request):
-    if not request.user.is_authenticated:
-        return redirect(build_next_path(request))
-    return Tag.objects.all()
-
-
-def get_products_tagged(request):
-    if not request.user.is_authenticated:
-        return redirect(build_next_path(request))
-    # Products.objects.filter(category__name__in=['T1'])
-    return TaggedItem.objects.all()
 
 
 def lobby(request):
