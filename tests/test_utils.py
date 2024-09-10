@@ -44,7 +44,7 @@ class TesteUtils:
         
         image_str = "data:image/png;base64," + base64.b64encode(output.getvalue()).decode('utf-8')
         
-        compressed_file = compress_image(image_str)
+        compressed_file = compress_image(image_str, 'compressed_image')
         
         assert isinstance(compressed_file, ContentFile)
         assert compressed_file.name == 'compressed_image.png'
@@ -57,7 +57,7 @@ class TesteUtils:
         image_str = "data:image/png;base64,invalidbase64string"
         
         with pytest.raises(ValueError):
-            compress_image(image_str)
+            compress_image(image_str, 'file_name')
 
     @mock.patch('utils.images.decode_base64_image')
     @mock.patch('PIL.Image.open')

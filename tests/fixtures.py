@@ -110,3 +110,11 @@ def product(db):
 @pytest.fixture
 def category(db):
     return Category.objects.create(name='Category1')
+
+@pytest.fixture
+def product1(db, category):
+    return Products.objects.create(name='Product1', category=category)
+
+@pytest.fixture
+def product2(db, category):
+    return Products.objects.create(name='Product2', category=category)

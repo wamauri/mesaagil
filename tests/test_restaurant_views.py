@@ -19,7 +19,8 @@ from apps.restaurants import views
 
 from .fixtures import (
     valid_image_data, image_file, 
-    product, category
+    product, category, 
+    product1, product2
 )
 
 
@@ -173,6 +174,12 @@ class TestRestaurantViews:
         assert res.status_code == 302
         assert category.name == str(product.category)
 
+    def test_add_product_category_when_user_is_not_authenticated(self, product):
+        url = reverse('add-product-category', args=[product.id])
+        res = self.c.post(path=url)
+        assert res.status_code == 302
+        assert res.url.startswith('accounts/login/')
+
     def test_add_category_from_modal_with_parent(self, db, product, category):
         self.c.force_login(self.u)
         url = reverse('add-category', args=[product.id])
@@ -204,10 +211,54 @@ class TestRestaurantViews:
     def test_add_category_form_is_empty(self, db, product):
         self.c.force_login(self.u)
         url = reverse('add-category', kwargs={'product_id': product.id})
-        print('=-=-=-=>', url)
         res = self.c.get(path=url)
         form = forms.CategoryForm()
 
         assert res.context['form'].is_bound == False
         assert res.context['form'].is_bound == form.is_bound
         assert isinstance(res.context['form'], forms.CategoryForm)
+
+    def test_add_product_when_user_is_not_authenticated(self, product):
+        url = reverse('add-category', kwargs={'product_id': product.id})
+        res = self.c.post(path=url)
+        assert res.status_code == 302
+        assert res.url.startswith('accounts/login/')
+
+    def test_product_detail_status_code_200_and_product_return(self, product):
+        self.c.force_login(self.u)
+        url = reverse('product-detail', args=[product.id])
+        res = self.c.get(path=url)
+        product = get_object_or_404(models.Products, id=product.id)
+
+        assert res.status_code == 200
+        assert product.name == res.context['product_detail'].name
+
+    def test_product_detail_when_user_is_not_authenticated(self, product):
+        url = reverse('product-detail', args=[product.id])
+        res = self.c.get(path=url)
+        assert res.status_code == 302
+        assert res.url.startswith('accounts/login/')
+
+    def test_redirects_when_user_is_not_authenticated(self):
+        url = reverse('filter-products')
+        data = {'category': 'Category1'}
+        res = self.c.post(path=url, data=data)
+        assert res.status_code == 302
+        assert res.url.startswith('accounts/login/')
+
+    def test_renders_template_with_products_when_authenticated(self, product1, product2):
+        self.c.force_login(self.u)
+        url = reverse('filter-products')
+        data = {'category': 'Category1'}
+        res = self.c.post(path=url, data=data)
+        assert res.status_code == 200
+        assert 'partials/cards.html' in [t.name for t in res.templates]
+        assert 'products' in res.context
+        assert list(res.context['products']) == [product1, product2]
+
+    def test_handles_missing_category_in_post_data(self):
+        self.c.force_login(self.u)
+        url = reverse('filter-products')
+        res = self.c.post(path=url, data={})
+        assert res.status_code == 200
+        assert not res.context['products']
