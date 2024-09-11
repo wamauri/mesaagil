@@ -1,7 +1,7 @@
 {% load widget_tweaks %}
 
   <h1>Adicionar Imagem</h1>
-  <form hx-post="{% url 'add-image-product' product.id %}" id="uploadProductsImageForm" autocomplete="off" enctype="multipart/form-data" novalidate>
+  <form hx-post="{% url 'add-image-product' product.id %}" hx-swap="delete" id="uploadProductsImageForm" autocomplete="off" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
     {# Image Preview #}
     <div class="mb-3">
@@ -12,15 +12,19 @@
       <div class="d-flex flex-column gap-2">
         <label class="btn btn-lg btn-outline-secondary fs-1 p-5" for="id_image">+</label>
       </div>
-      {% render_field field class="d-none" %}
+      {% render_field field|attr:"required" class="d-none" %}
     {% endfor %}
-    <input type="hidden" name="image_data" id="image-data">
+    <input required type="hidden" name="image_data" id="image-data">
   </form>
   {# Buttons #}
   <div class="d-flex flex-column gap-2 mt-3">
-    <button class="btn btn-lg btn-success" form="uploadProductsImageForm" type="submit">
+    <button id="uploadImage" class="btn btn-lg btn-success" form="uploadProductsImageForm" type="submit" disabled>
       Continuar
     </button>
-    <button class="btn btn-lg btn-light" form="uploadProductsImageForm" type="reset">Cancelar</button>
+    <button class="btn btn-lg btn-light" form="uploadProductsImageForm" type="reset"
+      hx-get="{% url 'products' user.code %}"
+      hx-replace-url="true">
+      Cancelar
+    </button>
   </div>
   {% include "partials/modal_image_cropper.html" %}

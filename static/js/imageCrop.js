@@ -58,10 +58,14 @@ export function initImageCropScript() {
     }
   });
 
+  $("#cropped-image").on("load", function() {
+    $("#uploadImage").removeAttr("disabled")
+  })
+
   $imageForm.off('submit').on('submit', function (event) {
     if (!$imageData.val()) {
       event.preventDefault();
-      alert('Please select and crop an image before submitting.');
+      alert('Você precisa adicionar uma imagem.');
     } else {
       // Form is valid, allow submission, then reset the fields
       setTimeout(function() {
