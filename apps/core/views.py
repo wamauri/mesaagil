@@ -3,6 +3,7 @@ import logging
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.urls import reverse
 
 from utils.utils import build_next_path, get_next_path, get_remeber
 from apps.restaurants.models import Products, Category
@@ -81,9 +82,22 @@ def home(request):
     if not request.user.is_authenticated:
         return redirect(build_next_path(request))
 
+    url = reverse(
+        viewname='products', 
+        args=[str(request.user.code)]
+    )
+
+    return redirect(url)
+
+
+def products(request, code):
+    if not request.user.is_authenticated:
+        return redirect(build_next_path(request))
+
     context = {
         'products': Products.objects.all(),
         'categories': Category.objects.all(),
+        'code': code,
     }
 
     return render(

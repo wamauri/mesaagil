@@ -1,7 +1,7 @@
 {% load humanize %}
 {% if user.groups.last.name == 'Waiter' %}
 {% for product in products %}
-  <div class="card mb-2 px-2 m-2 flex-fill" style="max-width: 385px; height: 100%; cursor: pointer;"
+  <div class="card mb-2 px-2 m-2 flex-fill col-xl-4" style="max-width: 385px; height: 100%; cursor: pointer;"
     hx-get="{% url 'product-detail' product.id %}"
     hx-target="#productDetail"
     hx-trigger="click">
@@ -10,7 +10,7 @@
         <div class="card-body p-0">
           <p class="card-title fw-medium mb-0">{{ product.name|truncatechars:25 }}</p>
           <p class="card-text text-body-secondary lh-sm mb-0">
-            <small>{{ product.description|linebreaksbr|truncatechars:45 }}</small>
+            <small>{{ product.description|linebreaksbr|truncatechars:55 }}</small>
           </p>
           <p class="card-text"><small class="text-body-dark">R$ {{ product.price|floatformat:2|intcomma }}</small></p>
         </div>
