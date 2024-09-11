@@ -94,4 +94,17 @@ $(document).on("htmx:afterSwap", function(e) {
     productQuantity();
     $("#productDetailModal").modal('show')
   }
+
+  if($("#id_price")){
+    $("#id_price").off("focus").on("focus", function() {
+      $(this).mask("#.##0,00", {reverse: true});
+    });
+  }
+
+  if(("#selectCat")){
+    $("#selectCat").on("change", function() {
+      $("#saveCat").removeAttr("disabled")
+      $("#saveAddCat").removeAttr("disabled")
+    })
+  }
 });

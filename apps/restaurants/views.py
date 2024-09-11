@@ -101,12 +101,6 @@ def upload_product_image(request, product_id):
         if form.is_valid() and image:
             product.food_image = prepare_images(image, file_name)
             product.save()
-
-            messages.add_message(
-                request=request, 
-                level=messages.SUCCESS, 
-                message=f'Imagem para {product.name} adicionado com sucesso!'
-            )
             context = {
                 'categories': Category.objects.all(),
                 'form': CategoryForm(),
@@ -133,13 +127,29 @@ def add_product_category(request, product_id: int):
         return redirect(build_next_path(request))
 
     if request.method == "POST":
-        category_id = int(request.POST.get('parent'))
-        category = get_object_or_404(Category, id=category_id)
         product = get_object_or_404(Products, id=product_id)
-        product.category = category
-        product.save()
+        try:
+            category_id = int(request.POST.get('parent'))
+            category = get_object_or_404(Category, id=category_id)
+            product.category = category
+            product.save()
 
-        return redirect('/')
+            if request.POST['action'] == 'another':
+                return redirect('products-new')
+            return redirect('/')
+        except:
+            context = {
+                'product': product,
+                'form': CategoryForm(),
+                'form_select': SelectCategoryForm()
+            }
+            messages.add_message(
+                request=request, 
+                level=messages.ERROR, 
+                message=f'Category not selected'
+            )
+            return render(request, 'category.html', context)
+    return render(request, 'category.html')
 
 
 def add_category(request, product_id: int):

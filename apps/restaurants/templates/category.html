@@ -5,13 +5,21 @@
     <div class="container row-cols-1 my-4">
       <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 col-xxl-6 mx-lg-auto mx-xl-auto mx-xxl-auto">
         <h1>Categorias</h1>
+        {% include "partials/messages.html" %}
         {% include "partials/add_product_category.html" %}
         {# Buttons #}
         <div class="d-flex flex-column gap-2 mt-3">
-          <button class="btn btn-lg btn-success" form="selectCategoriaForm" type="submit">
-            Continuar
+          <button id="saveCat" class="btn btn-lg btn-success" name="action" value="save" form="selectCategoriaForm" type="submit" disabled>
+            Salvar
           </button>
-          <button class="btn btn-lg btn-light" form="productsForm" type="reset">Cancelar</button>
+          <button id="saveAddCat" class="btn btn-lg btn-primary" name="action" value="another" form="selectCategoriaForm" type="submit" disabled>
+            Salvar e adicionar outro
+          </button>
+          <button class="btn btn-lg btn-light" form="productsForm" type="reset"
+            hx-get="{% url 'products' user.code %}"
+            hx-replace-url="true">
+            Cancelar
+          </button>
         </div>
       </div>
     </div>
