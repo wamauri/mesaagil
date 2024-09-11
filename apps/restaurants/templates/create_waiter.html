@@ -8,12 +8,12 @@
       {% csrf_token %}
       {% include "partials/form.html" with form=form %}
       <div class="d-flex flex-column gap-2 mt-3">
-        <button class="btn btn-lg btn-danger" type="submit"
+        <button class="btn btn-lg btn-success" type="submit"
           hx-post="{% url "waiters-new" %}"
           hx-target="this">
           Cadastrar
         </button>
-        <button class="btn btn-lg btn-secondary" type="reset">Cancelar</button>
+        <button class="btn btn-lg btn-light" type="reset">Cancelar</button>
       </div>                                                                       
     </form>
   </div>

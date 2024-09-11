@@ -6,11 +6,11 @@
     hx-target="#productDetail"
     hx-trigger="click">
     <div class="row g-0 align-items-center">
-      <div class="col-9 py-1">
+      <div class="col-9 py-1 pe-2">
         <div class="card-body p-0">
           <p class="card-title fw-medium mb-0">{{ product.name|truncatechars:25 }}</p>
           <p class="card-text text-body-secondary lh-sm mb-0">
-            {{ product.description|linebreaksbr|truncatechars:50 }}
+            <small>{{ product.description|linebreaksbr|truncatechars:45 }}</small>
           </p>
           <p class="card-text"><small class="text-body-dark">R$ {{ product.price|floatformat:2|intcomma }}</small></p>
         </div>
